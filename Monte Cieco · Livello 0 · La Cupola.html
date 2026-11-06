@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Monte Cieco · Livello 0 · La Cupola</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Special+Elite&display=swap">
+<style>
+:root{color-scheme:dark;--n1:#0b1020;--n2:#1a2342;--lamp:#f2b45a;--paper:#efe3c2;--ink:#2a2114;--red:#b3261e;--teal:#7cc4b4;--tx:#e8dfcf;--dim:#9a9aa8;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:radial-gradient(ellipse at 50% 0%,var(--n2),var(--n1) 70%) fixed;color:var(--tx);font-family:Georgia,serif}
+main{max-width:860px;margin:0 auto;padding:14px}
+.type{font-family:"Special Elite","Courier New",monospace}
+header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:6px 2px 12px}
+.logo{font-family:"Special Elite",monospace;color:var(--lamp);letter-spacing:.08em}
+.timer{font-family:"Special Elite",monospace;font-size:1.2rem;color:var(--tx);animation:pulse 2s infinite}
+@keyframes pulse{50%{color:var(--lamp)}}
+.slots{display:flex;gap:6px}.slots i{width:18px;height:18px;border:1.5px dashed #5a6080;border-radius:50% 50% 50% 0;transform:rotate(-45deg)}
+.card{background:#10172ccc;border:1px solid #2b365c;border-radius:14px;padding:20px;margin-top:10px;box-shadow:0 10px 40px #0008}
+h1{font-family:"Special Elite",monospace;font-weight:400;font-size:1.45rem;margin:0 0 10px;color:var(--lamp)}
+h2{font-family:"Caveat",cursive;font-size:1.8rem;margin:0 0 6px;color:var(--teal)}
+p{line-height:1.6;margin:.5em 0}.dim{color:var(--dim)}
+.msgs p{font-family:"Special Elite",monospace;font-size:.95rem;border-left:3px solid var(--lamp);padding:4px 10px;margin:8px 0;animation:in .5s}
+@keyframes in{from{opacity:0;transform:translateX(-12px)}}
+button,.btn{background:var(--lamp);color:#241a08;border:0;border-radius:999px;padding:10px 20px;font:inherit;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-block;transition:transform .15s,box-shadow .15s}
+button:hover,.btn:hover{transform:translateY(-2px);box-shadow:0 6px 18px #f2b45a55}button:disabled{opacity:.3;pointer-events:none}
+button.ghost{background:transparent;color:var(--tx);border:1px solid #5a6080}
+.hidden{display:none!important}
+svg{width:100%;height:auto;display:block;border-radius:10px}
+.hs{cursor:pointer;outline:none}.hs:hover,.hs:focus{filter:drop-shadow(0 0 8px #f2b45a)}
+.hs text{font-family:"Caveat",cursive;font-size:20px;fill:#f2b45a;opacity:0;transition:.2s}.hs:hover text,.hs:focus text{opacity:1}
+.mo{position:fixed;inset:0;background:#000b;z-index:9;display:flex;align-items:center;justify-content:center;padding:12px;animation:in .3s}
+.mbox{background:#141b33;border:1px solid #3a4673;border-radius:14px;max-width:640px;width:100%;max-height:92vh;overflow:auto;padding:20px;position:relative}
+.x{position:absolute;top:10px;right:10px;padding:4px 10px;background:transparent;color:var(--tx);border:1px solid #5a6080}
+.book{background:var(--paper);color:var(--ink);border-radius:4px 10px 10px 4px;padding:22px 24px;min-height:210px;box-shadow:inset 8px 0 0 #bfa86e,0 6px 20px #0006;transform-origin:left;margin-top:8px}
+.book.flip{animation:flip .5s}@keyframes flip{from{transform:perspective(900px) rotateY(-60deg);opacity:.3}}
+.date{font-family:"Caveat",cursive;font-size:1.3rem;color:#6d5a30}
+.book p{font-family:"Caveat",cursive;font-size:1.55rem;line-height:1.35;margin:4px 0}
+.dc{font-family:"Special Elite",monospace;color:var(--red);font-size:2.6rem;line-height:.8;animation:ink .8s}@keyframes ink{from{opacity:0;transform:scale(2)}}
+.tray{display:flex;gap:6px;align-items:center;justify-content:center;margin:6px 0}
+.tray b{width:34px;height:40px;border:2px dashed #5a6080;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:"Special Elite",monospace;font-size:1.4rem;color:var(--lamp)}
+.tray b.f{border:2px solid var(--lamp);animation:ink .6s}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+.term{background:#050a08;border:1px solid #1f3a2f;border-radius:8px;padding:16px;font-family:"Special Elite",monospace;color:#7dffb0}
+.row{display:flex;gap:8px;margin-top:8px}input{flex:1;min-width:0;background:transparent;border:1px solid #2a5a45;color:#7dffb0;padding:9px;font:inherit;border-radius:6px;text-transform:uppercase;letter-spacing:.25em}
+.log{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:10px}.log td{padding:8px 6px;border-bottom:1px solid #1f3a2f}
+.log button{padding:4px 10px;font-size:.8rem;background:transparent;color:#7dffb0;border:1px solid #7dffb0}
+.fb{margin-top:10px;min-height:1.5em;color:#ffcf7d}.shake{animation:sh .4s}@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.code{font-family:"Special Elite",monospace;font-size:1.5rem;color:var(--lamp);border:2px dashed var(--lamp);padding:10px;text-align:center;letter-spacing:.2em;margin:12px 0;border-radius:8px}
+ul{padding-left:1.1em}li{margin:.6em 0;line-height:1.55}
+.src{font-size:.8rem;color:var(--dim);border-top:1px solid #2b365c;margin-top:12px;padding-top:8px}
+.st{animation:tw 3s infinite}@keyframes tw{50%{opacity:.2}}
+.shoot{animation:sht 7s infinite;opacity:0}@keyframes sht{0%{opacity:0;transform:translate(0,0)}3%{opacity:1}12%{opacity:0;transform:translate(-120px,60px)}100%{opacity:0}}
+.lamp{animation:fl 3s infinite}@keyframes fl{0%,100%{opacity:.5}45%{opacity:.7}50%{opacity:.4}60%{opacity:.65}}
+.tele{transform-origin:360px 330px;animation:sw 14s ease-in-out infinite}@keyframes sw{50%{transform:rotate(7deg)}}
+.steam{animation:up 3s infinite;opacity:0}@keyframes up{0%{opacity:0;transform:translateY(0)}50%{opacity:.6}100%{opacity:0;transform:translateY(-18px)}}
+.led{animation:pulse2 1.4s infinite}@keyframes pulse2{50%{opacity:.2}}
+</style>
+</head>
+<body>
+<main>
+<header>
+ <div class="logo">◉ OSSERVATORIO DI MONTE CIECO</div>
+ <div class="slots" title="Frammenti della chiave"><i></i><i></i><i></i><i></i><i></i></div>
+</header>
+
+<section id="intro" class="card">
+ <h1>LIVELLO 0 · LA CUPOLA</h1>
+ <div class="msgs" id="chat"></div>
+ <button id="start" class="hidden">Entra nella Cupola →</button>
+</section>
+
+<section id="scene" class="card hidden">
+ <h2>Esplora la Cupola</h2>
+ <p class="dim">Elia se n'è andata lasciando tutto com'era. Clicca sugli oggetti per esaminarli: il terminale richiede due cose: una parola e un codice. Elia le ha nascoste, ma non te le dirà apertamente.</p>
+<svg viewBox="0 0 800 480" role="img" aria-label="Interno della cupola dell'osservatorio">
+ <defs>
+  <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c2547"/><stop offset="1" stop-color="#2b2236"/></linearGradient>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#050818"/><stop offset="1" stop-color="#1d2a5c"/></linearGradient>
+  <clipPath id="sl"><path d="M310 20 Q400 -20 490 20 L500 300 L300 300Z"/></clipPath>
+  <radialGradient id="gl"><stop offset="0" stop-color="#ffcf7d" stop-opacity=".8"/><stop offset="1" stop-color="#ffcf7d" stop-opacity="0"/></radialGradient>
+ </defs>
+ <rect width="800" height="480" fill="url(#wall)"/>
+ <g stroke="#0e1430" stroke-width="3" fill="none" opacity=".7"><path d="M0 0 Q150 200 120 480"/><path d="M200 0 Q250 200 220 480"/><path d="M800 0 Q650 200 680 480"/><path d="M600 0 Q550 200 580 480"/></g>
+ <g clip-path="url(#sl)"><rect x="290" y="-20" width="230" height="330" fill="url(#sky)"/><g id="stars"></g><path class="shoot" d="M470 60 l30 -14" stroke="#fff" stroke-width="2"/></g>
+ <path d="M310 20 Q400 -20 490 20 L500 300 L300 300Z" fill="none" stroke="#3a4673" stroke-width="6"/>
+ <g class="tele"><g transform="rotate(-38 360 330)"><rect x="330" y="150" width="60" height="190" rx="8" fill="#555e7a"/><rect x="325" y="140" width="70" height="22" rx="6" fill="#3f4660"/><rect x="340" y="210" width="40" height="10" fill="#7cc4b4"/></g></g>
+ <path d="M360 330 L320 430 M360 330 L400 430 M360 330 L360 430" stroke="#444c68" stroke-width="7"/>
+ <g class="hs" tabindex="0" role="button" aria-label="Telescopio" data-k="tel"><rect x="300" y="130" width="120" height="200" fill="transparent"/><text x="420" y="160">telescopio</text></g>
+ <!-- bacheca -->
+ <rect x="40" y="90" width="190" height="150" fill="#8a6a45" stroke="#4a3520" stroke-width="6" rx="4"/>
+ <rect x="62" y="110" width="52" height="40" fill="#cdd6e8" transform="rotate(-6 88 130)"/><circle cx="88" cy="106" r="4" fill="#b3261e"/>
+ <g transform="rotate(4 160 170)"><rect x="120" y="125" width="92" height="92" fill="#ffe27a"/><circle cx="166" cy="130" r="4" fill="#b3261e"/><g stroke="#7a6320" stroke-width="2.5" stroke-linecap="round"><path d="M132 150h66M132 166h56M132 182h64M132 198h40"/></g></g>
+ <g class="hs" tabindex="0" role="button" aria-label="Bacheca" data-k="cork"><rect x="40" y="90" width="190" height="150" fill="transparent"/><text x="50" y="82">bacheca</text></g>
+ <!-- scrivania -->
+ <rect x="0" y="390" width="800" height="90" fill="#4a3322"/><rect x="0" y="390" width="800" height="8" fill="#6b4a30"/>
+ <g><rect x="520" y="270" width="190" height="120" rx="8" fill="#161b2c" stroke="#3a4262" stroke-width="5"/><rect x="532" y="282" width="166" height="92" fill="#06140d"/>
+ <g fill="#7dffb0" font-family="monospace" font-size="13"><text x="542" y="306">&gt; LOGIN BLOCCATO</text><text x="542" y="326">user: e.marchetti</text><text x="542" y="346">pass: ______</text></g><circle class="led" cx="690" cy="364" r="4" fill="#7dffb0"/><rect x="600" y="390" width="30" height="10" fill="#3a4262"/></g>
+ <g class="hs" tabindex="0" role="button" aria-label="Terminale" data-k="mon"><rect x="520" y="270" width="190" height="120" fill="transparent"/><text x="545" y="262">terminale</text></g>
+ <g transform="translate(250 372)"><path d="M0 18 L40 18 L28 -26 L12 -26Z" fill="#d9a441"/><rect x="18" y="18" width="4" height="22" fill="#555"/></g>
+ <circle class="lamp" cx="270" cy="360" r="120" fill="url(#gl)"/>
+ <g transform="translate(60 395) rotate(-4)"><rect width="150" height="22" rx="3" fill="#efe3c2"/><rect y="-10" width="150" height="14" rx="3" fill="#d8caa0"/><rect x="120" y="-12" width="8" height="34" fill="#b3261e"/></g>
+ <g class="hs" tabindex="0" role="button" aria-label="Diario" data-k="diary"><rect x="55" y="380" width="165" height="45" fill="transparent"/><text x="80" y="372">il diario di Elia</text></g>
+ <g transform="translate(450 365)"><rect width="32" height="30" rx="4" fill="#cfd6e6"/><path d="M32 8 q14 0 14 10 q0 10 -14 10" fill="none" stroke="#cfd6e6" stroke-width="4"/><g stroke="#fff" stroke-width="2" fill="none"><path class="steam" d="M10 -4 q-4 -8 0 -14"/><path class="steam" style="animation-delay:1s" d="M20 -4 q-4 -8 0 -14"/></g></g>
+</svg>
+</section>
+
+<section id="lesson" class="card hidden">
+ <h1>✔ ACCESSO CONSENTITO</h1>
+ <p>Hai scoperto la parola nascosta e riconosciuto l'accesso sospetto. Prima di proseguire, ecco cosa devi portarti dietro:</p>
+ <h2>Cosa hai imparato</h2>
+ <ul>
+  <li><b>Un'informazione può nascondersi in piena vista.</b> La parola non era cifrata: bastava leggere le iniziali. Chi attacca sfrutta ciò che nessuno guarda con attenzione.</li>
+  <li><b>Controlla i registri di accesso.</b> Un accesso valido nella forma (nome giusto, password giusta) può essere sospetto per orario, dispositivo e luogo.</li>
+  <li><b>Un solo fattore non basta.</b> Per entrare servivano una parola e un codice: la verifica a due fattori protegge anche se uno dei due viene scoperto.</li>
+  <li><b>Un accesso condiviso è un rischio.</b> Se due persone usano le stesse credenziali, non si può sapere chi ha fatto cosa, e la sicurezza vale quanto la persona meno attenta.</li>
+ </ul>
+ <div class="src">Per approfondire: ACN – Agenzia per la Cybersicurezza Nazionale (acn.gov.it), sezione sensibilizzazione.</div>
+ <p>Il tuo codice di sblocco per la serratura:</p>
+ <div class="code">CUPOLA-0</div>
+ <a class="btn" id="lock" href="#" target="_blank" rel="noopener">Apri la serratura →</a>
+ <p id="warn" class="dim hidden">(Link del Modulo non ancora inserito)</p>
+</section>
+</main>
+
+<div id="mo" class="mo hidden"><div class="mbox"><button class="x" id="mx">✕</button><div id="mc"></div></div></div>
+
+<script>
+// ====== DA MODIFICARE: link del Google Modulo "Porta d'ingresso" ======
+const FORM_URL = "https://forms.gle/Wetbj7uYGcj2nGvb8";
+// ======================================================================
+const $=id=>document.getElementById(id);
+const diary=[
+ ["12 ottobre","Stanotte il cielo era limpidissimo. Dalla cupola si vedeva la Via Lattea fino all'orizzonte."],
+ ["13 ottobre","Tre ore di registrazione e sempre lo stesso schema, ripetuto ogni 71 secondi. Non è rumore."],
+ ["15 ottobre","Era ora di un aiuto: ho chiesto al mio assistente di mettere in ordine l'archivio. Usa il mio stesso accesso condiviso, così fa prima."],
+ ["16 ottobre","L'archivio dei dati è su un solo computer, e la password la conosciamo in due. Dovrei cambiarla, un giorno."],
+ ["18 ottobre","Lunedì annuncio la scoperta. Non ne ho parlato con nessuno, nemmeno con la mia famiglia."],
+ ["19 ottobre","Altro che sicurezza: se mi accadesse qualcosa, la chiave di uscita è in cinque frammenti, nascosti nella mia vita digitale."]
+];
+const seen=new Set([0]);let pg=0;
+function open(h){$("mc").innerHTML=h;$("mo").classList.remove("hidden")}
+function close(){$("mo").classList.add("hidden")}
+$("mx").onclick=close;$("mo").onclick=e=>{if(e.target.id==="mo")close()};
+
+function renderDiary(flip){
+ const e=diary[pg],tray=[..."STELLA"].map((l,i)=>seen.has(i)?`<b class="f">${l}</b>`:"<b>?</b>").join("");
+ open(`<h2>Il diario di Elia</h2>
+ <p class="dim">Il diario privato di Elia. Leggilo con attenzione: ogni pagina, anche la forma del testo, può contare.</p>
+ <div class="book${flip?" flip":""}"><div class="date">${e[0]}</div><p><span class="dc">${e[1][0]}</span>${e[1].slice(1)}</p></div>
+ <div class="nav"><button class="ghost" id="pv" ${pg==0?"disabled":""}>← Prima</button><span class="dim">pagina ${pg+1}/6</span><button id="nx" ${pg==5?"disabled":""}>Dopo →</button></div>`);
+ $("pv").onclick=()=>{pg--;seen.add(pg);renderDiary(1)};$("nx").onclick=()=>{pg++;seen.add(pg);renderDiary(1)};
+}
+let tries=0;
+function terminal(){
+ open(`<h2>Il terminale</h2><div class="term"><div>&gt; ACCESSO A DUE FATTORI · inserisci la parola e il codice di verifica:</div>
+ <div class="row"><input id="pw" autocomplete="off" spellcheck="false" maxlength="20" placeholder="PAROLA"><input id="pin" inputmode="numeric" autocomplete="off" maxlength="4" placeholder="CODICE" style="max-width:110px"><button id="ok">Accedi</button></div><div class="fb" id="fb"></div></div>`);
+ const go=()=>{const v=$("pw").value.trim().toUpperCase(),n=$("pin").value.trim(),f=$("fb");
+  if(v==="STELLA"&&n==="71"){f.textContent="Verifica a due fattori superata. Carico il registro degli accessi...";setTimeout(logs,900)}
+  else{tries++;let h="";if(tries>=3)h=" · Indizio: la parola non è scritta in chiaro, nasce dalla forma del diario. Il codice è un numero che il cielo ripete.";if(tries>=5)h=" · Indizio forte: metti in fila le iniziali di ogni voce del diario. Il codice è il periodo del segnale, in secondi.";f.textContent="✖ ACCESSO NEGATO · almeno uno dei due fattori è errato"+h;
+   const t=document.querySelector(".term");t.classList.remove("shake");void t.offsetWidth;t.classList.add("shake")}};
+ $("ok").onclick=go;$("pw").addEventListener("keydown",e=>{if(e.key==="Enter")go()});
+}
+const rows=[
+ ["18:20","e.marchetti","Telefono di Elia · rete dell'osservatorio","Riuscito","Era il telefono abituale di Elia, in sede: normale."],
+ ["21:03","e.marchetti","PC della Cupola","Riuscito","Era Elia, in sede, a un orario normale."],
+ ["22:40","assistente","PC della Cupola","Riuscito","Eri tu, dal tuo computer in osservatorio: normale."],
+ ["01:58","e.marchetti","Dispositivo mai visto · fuori rete","Fallito","Sospetto, ma è un tentativo fallito: l'intruso non era ancora dentro."],
+ ["02:14","e.marchetti","Dispositivo mai visto · fuori rete","Riuscito","","ok"],
+ ["05:10","assistente","PC della Cupola","Riuscito","Eri tu, ancora dal PC dell'osservatorio: normale."]
+];
+function logs(){
+ open(`<h2>Registro accessi</h2><div class="term"><div>&gt; Stanotte l'archivio è stato modificato. Quale accesso segna l'ingresso dell'intruso?</div>
+ <table class="log">${rows.map((r,i)=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td><button data-i="${i}">Segnala</button></td></tr>`).join("")}</table><div class="fb" id="fb"></div></div>`);
+ document.querySelectorAll(".log button").forEach(b=>b.onclick=()=>{
+  const r=rows[b.dataset.i],f=$("fb");
+  if(r[5]){f.innerHTML="✔ Esatto. Il nome utente era quello di Elia, ma il <b>dispositivo era sconosciuto</b>, da fuori rete e alle 2 di notte, quando Elia non c'era. Qualcuno ha usato le sue credenziali.";
+   f.insertAdjacentHTML("beforeend",'<p><button id="goon">Continua →</button></p>');$("goon").onclick=()=>{close();$("scene").classList.add("hidden");$("lesson").classList.remove("hidden");scrollTo(0,0)}}
+  else{f.textContent="✖ "+r[4]+" Guarda orario, dispositivo e luogo."}});
+}
+const info={
+ tel:`<h2>Il telescopio</h2><p>È puntato sulla stessa regione di cielo da tre notti. Sul registro, un segnale che si ripete ogni 71 secondi. Sul bordo, Elia ha scritto a matita:</p><p class="type">«Le cose importanti non stanno al centro. Stanno nei dettagli.»</p><p class="dim">Sul registro del telescopio: «Periodo del segnale: vedi mio diario.»</p>`,
+ cork:`<h2>La bacheca</h2><p>Un biglietto giallo, attaccato di fretta:</p><p class="type" style="background:#ffe27a;color:#3a2f10;padding:12px;transform:rotate(-1deg)">«Promemoria: la parola per il terminale non è scritta in nessuna riga del diario. Nasce dalla forma del testo. Il codice, invece, è un numero che il cielo ripete.»</p>`
+};
+document.querySelectorAll(".hs").forEach(h=>{const act=()=>{const k=h.dataset.k;if(k==="diary"){renderDiary()}else if(k==="mon")terminal();else open(info[k])};
+ h.onclick=act;h.onkeydown=e=>{if(e.key==="Enter"||e.key===" ")act()}});
+
+function cd(){const n=new Date(),t=new Date(n);t.setHours(6,0,0,0);if(t<=n)t.setDate(t.getDate()+1);
+ const s=Math.floor((t-n)/1000),p=x=>String(x).padStart(2,"0");$("cd").textContent=p(Math.floor(s/3600))+":"+p(Math.floor(s%3600/60))+":"+p(s%60)}
+
+
+const lines=["[ALLARME] Sistema centrale bloccato.","[SISTEMA] Alle 06:00 l'archivio sarà sovrascritto in modo definitivo.","[SISTEMA] Dott.ssa E. Marchetti: assente da ieri sera. Nessun avviso.","[SISTEMA] Qualcuno scrive messaggi a suo nome e sposta file dell'archivio.","[SISTEMA] Sei l'assistente di Elia. Trova la chiave di uscita prima dell'alba."];
+let k=0;(function nxt(){if(k<lines.length){const p=document.createElement("p");p.textContent=lines[k++];$("chat").appendChild(p);setTimeout(nxt,1000)}else $("start").classList.remove("hidden")})();
+$("start").onclick=()=>{$("intro").classList.add("hidden");$("scene").classList.remove("hidden")};
+
+if(FORM_URL.startsWith("http"))$("lock").href=FORM_URL;else{$("warn").classList.remove("hidden");$("lock").onclick=e=>e.preventDefault()}
+
+const g=$("stars");let s="";for(let i=0;i<70;i++){s+=`<circle class="st" style="animation-delay:${(Math.random()*3).toFixed(1)}s" cx="${300+Math.random()*200}" cy="${Math.random()*300}" r="${(Math.random()*1.4+.4).toFixed(1)}" fill="#fff"/>`}g.innerHTML=s;
+</script>
+</body>
+</html>
